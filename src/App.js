@@ -2,20 +2,18 @@ import React, { useState } from 'react'
 import Menu from './Menu'
 import Categories from './Categories'
 import items from './data'
+const allCategories = ['all', ...new Set(items.map((item) => item.category))]
 
 function App() {
-  const [category, setCategory] = useState('all')
+  const [itemsList, setItems] = useState(items)
 
-  const checkCategory = (item) => {
-    if (item === 'breakfast') {
-      setCategory('breakfast')
-    } else if (item === 'lunch') {
-      setCategory('lunch')
-    } else if (item === 'shakes') {
-      setCategory('shakes')
-    } else if (item === 'all') {
-      setCategory('all')
+  const filterItems = (category) => {
+    if (category === 'all') {
+      setItems(items)
+      return
     }
+    const newItems = items.filter((item) => item.category === category)
+    setItems(newItems)
   }
 
   return (
@@ -25,36 +23,11 @@ function App() {
           <h2>Our Menu</h2>
           <div className='underline'></div>
         </div>
-        <div className='btn-container'>
-          <button className='filter-btn' onClick={() => checkCategory('all')}>
-            All
-          </button>
-          <button
-            className='filter-btn'
-            onClick={() => checkCategory('breakfast')}
-          >
-            Breakfast
-          </button>
-          <button className='filter-btn' onClick={() => checkCategory('lunch')}>
-            Lunch
-          </button>
-          <button
-            className='filter-btn'
-            onClick={() => checkCategory('shakes')}
-          >
-            Snakes
-          </button>
-        </div>
+        <Categories categories={allCategories} filterItems={filterItems} />
         <div className='section-center'>
-          {category === 'all'
-            ? items.map((item) => {
-                return <Menu key={item.id} item={item} />
-              })
-            : items
-                .filter((item) => item.category === category)
-                .map((item) => {
-                  return <Menu key={item.id} item={item} />
-                })}
+          {itemsList.map((item) => {
+            return <Menu key={item.id} item={item} />
+          })}
         </div>
       </section>
     </main>

@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Menu = ({ item }) => {
-  const { id, title, price, img, desc } = item
+  const { title, price, img, desc } = item
   return (
     <article className='menu-item'>
       <img src={img} alt={title} className='photo' />
